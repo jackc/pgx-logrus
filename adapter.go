@@ -1,6 +1,6 @@
-// Package logrusadapter provides a logger that writes to a github.com/sirupsen/logrus.Logger
+// Package logrus provides a logger that writes to a github.com/sirupsen/logrus.Logger
 // log.
-package logrusadapter
+package logrus
 
 import (
 	"context"
