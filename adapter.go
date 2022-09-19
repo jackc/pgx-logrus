@@ -5,7 +5,7 @@ package logrus
 import (
 	"context"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/sirupsen/logrus"
 )
 
@@ -17,7 +17,7 @@ func NewLogger(l logrus.FieldLogger) *Logger {
 	return &Logger{l: l}
 }
 
-func (l *Logger) Log(ctx context.Context, level pgx.LogLevel, msg string, data map[string]interface{}) {
+func (l *Logger) Log(ctx context.Context, level tracelog.LogLevel, msg string, data map[string]interface{}) {
 	var logger logrus.FieldLogger
 	if data != nil {
 		logger = l.l.WithFields(data)
@@ -26,15 +26,15 @@ func (l *Logger) Log(ctx context.Context, level pgx.LogLevel, msg string, data m
 	}
 
 	switch level {
-	case pgx.LogLevelTrace:
+	case tracelog.LogLevelTrace:
 		logger.WithField("PGX_LOG_LEVEL", level).Debug(msg)
-	case pgx.LogLevelDebug:
+	case tracelog.LogLevelDebug:
 		logger.Debug(msg)
-	case pgx.LogLevelInfo:
+	case tracelog.LogLevelInfo:
 		logger.Info(msg)
-	case pgx.LogLevelWarn:
+	case tracelog.LogLevelWarn:
 		logger.Warn(msg)
-	case pgx.LogLevelError:
+	case tracelog.LogLevelError:
 		logger.Error(msg)
 	default:
 		logger.WithField("INVALID_PGX_LOG_LEVEL", level).Error(msg)
